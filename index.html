@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Four Number Sequence Validator</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    .font-mono-code {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    /* Hide number input spin arrows for sleek design */
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+      -webkit-appearance: none; 
+      margin: 0; 
+    }
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.92); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .animate-pop {
+      animation: popIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+  </style>
+</head>
+
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 selection:bg-indigo-500 selection:text-white">
+  <main class="w-full max-w-2xl bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-10 shadow-2xl backdrop-blur-xl transition-all">
+    
+    <!-- Header -->
+    <header class="text-center mb-8">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-semibold uppercase tracking-wider mb-3">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+        </svg>
+        Sequence Comparison Tool
+      </div>
+      <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">4-Number Difference Checker</h1>
+      <p class="text-slate-400 text-sm mt-2 max-w-md mx-auto">
+        Enter 4 numbers in a row to calculate the differences, sum them, add the 1st number, and compare with the 4th number.
+      </p>
+    </header>
+
+    <!-- Input Section: 4 numbers in a single line -->
+    <div class="bg-slate-800/60 rounded-2xl p-5 border border-slate-700/60 mb-6 shadow-inner">
+      <div class="flex items-center justify-between mb-3">
+        <span class="text-xs font-semibold text-slate-300 uppercase tracking-wider">Input Sequence (Row)</span>
+        <button id="quick-preset-btn" type="button" class="text-xs text-indigo-400 hover:text-indigo-300 font-medium transition-colors">
+          Try Example (10, 20, 25, 35)
+        </button>
+      </div>
+
+      <!-- Single row container -->
+      <div class="grid grid-cols-4 gap-2 sm:gap-4">
+        <!-- Number 1 -->
+        <div class="flex flex-col">
+          <label for="num1" class="text-[11px] sm:text-xs font-medium text-slate-400 mb-1.5 text-center">Num 1</label>
+          <input 
+            type="number" 
+            id="num1" 
+            placeholder="0" 
+            class="w-full text-center font-mono-code font-bold text-lg sm:text-xl py-3 px-2 bg-slate-900 border border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-white transition-all shadow-inner"
+          >
+        </div>
+
+        <!-- Number 2 -->
+        <div class="flex flex-col">
+          <label for="num2" class="text-[11px] sm:text-xs font-medium text-slate-400 mb-1.5 text-center">Num 2</label>
+          <input 
+            type="number" 
+            id="num2" 
+            placeholder="0" 
+            class="w-full text-center font-mono-code font-bold text-lg sm:text-xl py-3 px-2 bg-slate-900 border border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-white transition-all shadow-inner"
+          >
+        </div>
+
+        <!-- Number 3 -->
+        <div class="flex flex-col">
+          <label for="num3" class="text-[11px] sm:text-xs font-medium text-slate-400 mb-1.5 text-center">Num 3</label>
+          <input 
+            type="number" 
+            id="num3" 
+            placeholder="0" 
+            class="w-full text-center font-mono-code font-bold text-lg sm:text-xl py-3 px-2 bg-slate-900 border border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-white transition-all shadow-inner"
+          >
+        </div>
+
+        <!-- Number 4 -->
+        <div class="flex flex-col">
+          <label for="num4" class="text-[11px] sm:text-xs font-medium text-slate-400 mb-1.5 text-center">Num 4</label>
+          <input 
+            type="number" 
+            id="num4" 
+            placeholder="0" 
+            class="w-full text-center font-mono-code font-bold text-lg sm:text-xl py-3 px-2 bg-slate-900 border border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-white transition-all shadow-inner"
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex items-center gap-3 mb-8">
+      <button 
+        id="calculate-btn" 
+        type="button" 
+        class="flex-1 py-3.5 px-6 rounded-xl font-semibold text-white bg-indigo-600 hover:bg-indigo-500 active:scale-[0.98] transition-all shadow-lg shadow-indigo-600/30 flex items-center justify-center gap-2 cursor-pointer"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+        </svg>
+        <span>Calculate & Check</span>
+      </button>
+
+      <button 
+        id="reset-btn" 
+        type="button" 
+        class="py-3.5 px-5 rounded-xl font-medium text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 border border-slate-700 transition-all active:scale-[0.98] cursor-pointer"
+        title="Reset Fields"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Output Card -->
+    <div id="result-box" class="hidden rounded-2xl p-6 border transition-all animate-pop mb-6">
+      <div class="text-center">
+        <span class="text-xs uppercase tracking-widest font-semibold text-slate-400">Result Status</span>
+        <div id="result-word" class="text-3xl sm:text-4xl font-black mt-2 tracking-wide font-mono-code"></div>
+        <p id="result-explanation" class="text-sm mt-2 text-slate-300"></p>
+      </div>
+    </div>
+
+    <!-- Step by Step Calculation Breakdown -->
+    <div id="breakdown-box" class="hidden bg-slate-800/40 rounded-2xl p-5 border border-slate-800 text-sm">
+      <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
+        <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+        </svg>
+        Step-by-Step Breakdown
+      </h3>
+
+      <div class="space-y-2.5 font-mono-code text-xs sm:text-sm text-slate-300">
+        <div class="p-2.5 rounded-lg bg-slate-900/70 border border-slate-800/80 flex justify-between items-center">
+          <span class="text-slate-400">Step 1: Differences (|B-A|, |C-B|, |D-C|)</span>
+          <span id="step-diffs" class="font-bold text-indigo-300"></span>
+        </div>
+        <div class="p-2.5 rounded-lg bg-slate-900/70 border border-slate-800/80 flex justify-between items-center">
+          <span class="text-slate-400">Step 2: Sum of 3 differences</span>
+          <span id="step-sum" class="font-bold text-indigo-300"></span>
+        </div>
+        <div class="p-2.5 rounded-lg bg-slate-900/70 border border-slate-800/80 flex justify-between items-center">
+          <span class="text-slate-400">Step 3: Sum + 1st number</span>
+          <span id="step-final-sum" class="font-bold text-indigo-300"></span>
+        </div>
+        <div class="p-2.5 rounded-lg bg-slate-900/70 border border-slate-800/80 flex justify-between items-center">
+          <span class="text-slate-400">Step 4: Comparison vs 4th number</span>
+          <span id="step-comparison" class="font-bold"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error container -->
+    <div id="error-message" class="hidden mt-4 p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs sm:text-sm text-center font-medium">
+      Please enter valid numbers in all 4 boxes to calculate.
+    </div>
+
+  </main>
+
+  <script>
+    // Grab elements
+    const num1Input = document.getElementById('num1');
+    const num2Input = document.getElementById('num2');
+    const num3Input = document.getElementById('num3');
+    const num4Input = document.getElementById('num4');
+    
+    const calculateBtn = document.getElementById('calculate-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const presetBtn = document.getElementById('quick-preset-btn');
+    
+    const resultBox = document.getElementById('result-box');
+    const resultWord = document.getElementById('result-word');
+    const resultExplanation = document.getElementById('result-explanation');
+    const breakdownBox = document.getElementById('breakdown-box');
+    const errorBox = document.getElementById('error-message');
+
+    const stepDiffs = document.getElementById('step-diffs');
+    const stepSum = document.getElementById('step-sum');
+    const stepFinalSum = document.getElementById('step-final-sum');
+    const stepComparison = document.getElementById('step-comparison');
+
+    // Helper: auto-advance input when typed or on Enter key
+    const inputs = [num1Input, num2Input, num3Input, num4Input];
+    inputs.forEach((input, index) => {
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          if (index < inputs.length - 1) {
+            inputs[index + 1].focus();
+          } else {
+            runCalculation();
+          }
+        }
+      });
+      // Clear error on input
+      input.addEventListener('input', () => {
+        errorBox.classList.add('hidden');
+      });
+    });
+
+    // Preset button for quick testing
+    presetBtn.addEventListener('click', () => {
+      num1Input.value = '10';
+      num2Input.value = '20';
+      num3Input.value = '25';
+      num4Input.value = '35';
+      runCalculation();
+    });
+
+    // Reset logic
+    resetBtn.addEventListener('click', () => {
+      inputs.forEach(input => input.value = '');
+      resultBox.classList.add('hidden');
+      breakdownBox.classList.add('hidden');
+      errorBox.classList.add('hidden');
+      num1Input.focus();
+    });
+
+    // Calculation and matching logic
+    calculateBtn.addEventListener('click', runCalculation);
+
+    function runCalculation() {
+      const val1 = num1Input.value.trim();
+      const val2 = num2Input.value.trim();
+      const val3 = num3Input.value.trim();
+      const val4 = num4Input.value.trim();
+
+      // Validation
+      if (val1 === '' || val2 === '' || val3 === '' || val4 === '') {
+        errorBox.textContent = 'Please enter valid values for all 4 inputs.';
+        errorBox.classList.remove('hidden');
+        resultBox.classList.add('hidden');
+        breakdownBox.classList.add('hidden');
+        return;
+      }
+
+      const n1 = parseFloat(val1);
+      const n2 = parseFloat(val2);
+      const n3 = parseFloat(val3);
+      const n4 = parseFloat(val4);
+
+      if (isNaN(n1) || isNaN(n2) || isNaN(n3) || isNaN(n4)) {
+        errorBox.textContent = 'Please make sure all inputs are valid numeric values.';
+        errorBox.classList.remove('hidden');
+        resultBox.classList.add('hidden');
+        breakdownBox.classList.add('hidden');
+        return;
+      }
+
+      errorBox.classList.add('hidden');
+
+      // 1. Calculate the difference between:
+      // - 1st and 2nd number
+      // - 2nd and 3rd number
+      // - 3rd and 4th number
+      const diff1 = Math.abs(n2 - n1);
+      const diff2 = Math.abs(n3 - n2);
+      const diff3 = Math.abs(n4 - n3);
+
+      // 2. Addition of the 3 differences
+      const sumDiff = diff1 + diff2 + diff3;
+
+      // 3. Addition of sumDiff with the first number in the row
+      const finalResult = sumDiff + n1;
+
+      // 4. Check if finalResult matches fourth number (n4)
+      // Round slightly to eliminate floating point imprecision
+      const isMatching = Math.abs(finalResult - n4) < 1e-9;
+
+      // Display the exact requested words:
+      // If matching -> "Matching"
+      // If not matching -> "successful"
+      if (isMatching) {
+        resultWord.textContent = 'Matching';
+        resultWord.className = 'text-3xl sm:text-4xl font-black mt-2 tracking-wide font-mono-code text-emerald-400';
+        resultBox.className = 'rounded-2xl p-6 border bg-emerald-500/10 border-emerald-500/30 transition-all animate-pop mb-6';
+        resultExplanation.textContent = `Calculated value (${finalResult}) is equal to the fourth number (${n4}).`;
+        stepComparison.textContent = `${finalResult} == ${n4} (Equal)`;
+        stepComparison.className = 'font-bold text-emerald-400';
+      } else {
+        resultWord.textContent = 'successful';
+        resultWord.className = 'text-3xl sm:text-4xl font-black mt-2 tracking-wide font-mono-code text-cyan-400';
+        resultBox.className = 'rounded-2xl p-6 border bg-cyan-500/10 border-cyan-500/30 transition-all animate-pop mb-6';
+        resultExplanation.textContent = `Calculated value (${finalResult}) differs from the fourth number (${n4}).`;
+        stepComparison.textContent = `${finalResult} ≠ ${n4} (Not Equal)`;
+        stepComparison.className = 'font-bold text-cyan-400';
+      }
+
+      // Populate Step-by-Step Breakdown
+      stepDiffs.textContent = `${diff1}, ${diff2}, ${diff3}`;
+      stepSum.textContent = `${diff1} + ${diff2} + ${diff3} = ${sumDiff}`;
+      stepFinalSum.textContent = `${sumDiff} + ${n1} = ${finalResult}`;
+
+      // Reveal result sections
+      resultBox.classList.remove('hidden');
+      breakdownBox.classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>
